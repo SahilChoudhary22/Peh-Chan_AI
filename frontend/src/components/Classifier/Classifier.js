@@ -1,7 +1,7 @@
 import React, { Component } from 'react'; //imrc
 import Dropzone from 'react-dropzone';
 import './Classifier.css'
-import { Spinner, Button } from 'react-bootstrap';
+import { Spinner, Button, Alert, Image } from 'react-bootstrap';
 import axios from 'axios';
 
 // cc
@@ -9,6 +9,7 @@ class Classifier extends Component {
   state = {
     files: [],
     isLoading: false,
+    recentImage: null,
   }
 
   // // method called after the component is rendered
@@ -31,7 +32,9 @@ class Classifier extends Component {
   // On dropping the file in the dropzone
   onDrop = (files) => {
     this.setState({
+      files:[],
       isLoading: true,
+      recentImage: null,
     })
     this.loadImage(files)
   }
@@ -48,8 +51,19 @@ class Classifier extends Component {
     }, 1000);    
   }
 
+  activateSpinner = () => {
+    this.setState({
+      files:[],
+      isLoading:true})
+  }
+
+  deactivateSpinner = () => {
+    this.setState({isLoading:false})
+  }
+
   // send image to the database
   sendImage = () => {
+    this.activateSpinner()
     let formData = new FormData()
     formData.append('picture', this.state.files[0], this.state.files[0].name)
 
@@ -60,11 +74,29 @@ class Classifier extends Component {
       }
     })
     .then(resp => {
-      console.log(resp)
+      this.getImageClass(resp)
+      console.log(resp.data.id)
     })
     .catch(err => {
       console.log("An error occured" + err)
     })
+  }
+
+  getImageClass = (obj) => {
+    axios.get(`http://127.0.0.1:8000/api/images/${obj.data.id}/`, {
+      headers: {
+        'accept': 'application/json',
+      }
+    }).then(resp => {
+      this.setState({
+        recentImage:resp
+      })
+      console.log(resp)
+    })
+    .catch(err => {
+      console.log(err)
+    })
+    this.deactivateSpinner()
   }
   
 
@@ -95,6 +127,13 @@ class Classifier extends Component {
               <Spinner animation="grow" variant="info" role="status">
               </Spinner>
               }
+              {this.state.recentImage &&
+              <>
+              <Alert variant="primary">
+                {this.state.recentImage.data.classification}
+              </Alert>
+              <Image className="justify-content-center" src={this.state.recentImage.data.picture} height='200'rounded/>
+              </>}
           </section>
         )}
       </Dropzone>);
