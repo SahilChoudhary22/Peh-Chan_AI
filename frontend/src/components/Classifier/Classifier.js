@@ -12,22 +12,6 @@ class Classifier extends Component {
     recentImage: null,
   }
 
-  // // method called after the component is rendered
-  // componentDidMount() {
-  //   this.getImages()
-  // }
-
-  // // getting the images from the API
-  // getImages = () => {
-  //   // endpoint to access
-  //   axios.get('http://127.0.0.1:8000/api/images/', {
-  //     headers: {
-  //       'accept': 'application/json'
-  //     }
-  //   }).then(resp=> {
-  //     console.log(resp)
-  //   })
-  // }
 
   // On dropping the file in the dropzone
   onDrop = (files) => {
