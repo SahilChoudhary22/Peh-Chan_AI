@@ -12,3 +12,21 @@
 .back:hover{
     border:3px dashed deepskyblue;
 }
+
+.sittingBoy #Head {
+    animation: rotationPro 3s infinite ease-in-out;
+    transform-origin: center;
+    transform-box: fill-box;
+}
+
+@keyframes rotationPro {
+    0% {
+        transform: rotate(1deg);
+    }
+    50% {
+        transform: rotate(20deg);
+    }
+    100% {
+        transform: rotate(1deg);
+    }
+}

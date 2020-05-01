@@ -1,8 +1,9 @@
 import React, { Component } from 'react'; //imrc
 import Dropzone from 'react-dropzone';
 import './Classifier.css'
-import { Spinner, Button, Alert, Image } from 'react-bootstrap';
+import { Spinner, Button, Alert, Image, Row, Col, Container } from 'react-bootstrap';
 import axios from 'axios';
+import { ReactComponent } from './sitting.svg'
 
 // cc
 class Classifier extends Component {
@@ -92,6 +93,12 @@ class Classifier extends Component {
     ));
 
     return (
+      <Container>
+      <Row>
+      <Col sm={4}>
+        <ReactComponent className="sittingBoy"/>
+      </Col>
+      <Col sm={8}>
       <Dropzone onDrop={this.onDrop} accept='image/png, image/jpeg'>
         {({ isDragActive, getRootProps, getInputProps }) => (
           <section className="container">
@@ -120,7 +127,11 @@ class Classifier extends Component {
               </>}
           </section>
         )}
-      </Dropzone>);
+      </Dropzone>
+      </Col>
+      </Row>
+      </Container>
+      );
   }
 }
 
